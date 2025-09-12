@@ -1,2 +1,2 @@
 # hacknetic
-this is our hackthon project
+this is our hackathon project
