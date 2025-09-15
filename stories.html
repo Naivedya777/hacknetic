@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stories of Bravery - K. O'Sullivan</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary: #b5838d;
+      --secondary: #6d597a;
+      --accent: #ffd6a5;
+      --bg-main: #ffe5ec;
+      --card-bg: #fff1f2;
+    }
+
+    /* Visually hidden for accessibility */
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--bg-main);
+      color: var(--secondary);
+      min-height: 100vh;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary);
+      padding: 1em 2em;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(182, 131, 141, 0.07);
+    }
+
+    .logo {
+      font-size: 1.45em;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 2px;
+      user-select: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2em;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1em;
+      letter-spacing: 1px;
+      padding-bottom: 2px;
+      transition: color 0.2s, border-bottom 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus,
+    .nav-links a[aria-current="page"] {
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+      outline: none;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 1rem;
+      background: var(--bg-main);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(182, 131, 141, 0.12);
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 2.1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      letter-spacing: 1.25px;
+    }
+
+    /* Search Input */
+    #searchStories {
+      width: 100%;
+      max-width: 480px;
+      display: block;
+      margin: 0 auto 2rem auto;
+      padding: 0.8em 1.2em;
+      font-size: 1.05rem;
+      border-radius: 12px;
+      border: 2px solid var(--primary);
+      font-family: inherit;
+      transition: border-color 0.3s;
+    }
+
+    #searchStories:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    /* Story submission form */
+    #storyForm {
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    #storyForm label {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1.05rem;
+    }
+
+    #storyForm textarea {
+      resize: vertical;
+      min-height: 6rem;
+      font-family: inherit;
+      font-size: 1rem;
+      padding: 1em;
+      border-radius: 12px;
+      border: 2px solid var(--primary);
+      transition: border-color 0.3s;
+      width: 100%;
+    }
+
+    #storyForm textarea:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    #storyForm .submit-btn {
+      align-self: flex-start;
+      padding: 0.6rem 2rem;
+      font-size: 1.1rem;
+      border-radius: 24px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      max-width: 200px;
+    }
+
+    #storyForm .submit-btn:hover,
+    #storyForm .submit-btn:focus {
+      background-color: var(--accent);
+      color: var(--primary);
+      outline: none;
+    }
+
+    /* Stories list container */
+    #storyList {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      color: var(--primary);
+      font-size: 1rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      border-radius: 14px;
+    }
+
+    /* Individual story entries */
+    .story-entry {
+      background: var(--card-bg);
+      padding: 1.2rem 1.5rem;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(182, 131, 141, 0.12);
+      border-left: 4px solid var(--accent);
+    }
+
+    /* Message when no stories found */
+    #storyList > p {
+      text-align: center;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--secondary);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--primary);
+      padding: 1.8em 2em;
+      color: #fff;
+      font-size: 1em;
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .footer-logo-name {
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      justify-content: center;
+    }
+
+    .footer-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      object-fit: contain;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(182, 131, 141, 0.12);
+    }
+
+    .footer-site-name {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1.5px;
+      user-select: none;
+    }
+
+    .footer-links,
+    .footer-emails {
+      display: flex;
+      flex-direction: row;
+      gap: 2em;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .footer-link,
+    .footer-email {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1em;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover,
+    .footer-link:focus,
+    .footer-email:hover,
+    .footer-email:focus {
+      color: var(--accent);
+      outline: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 0.6em;
+      }
+
+      .nav-links {
+        gap: 1em;
+      }
+
+      main {
+        margin: 1rem auto 3rem;
+        padding: 0 1rem;
+      }
+
+      #storyForm {
+        max-width: 100%;
+      }
+
+      #storyList {
+        max-width: 100%;
+        padding: 0;
+      }
+
+      #searchStories {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .footer-row {
+        flex-direction: column;
+        gap: 1em;
+      }
+
+      .footer-links,
+      .footer-emails {
+        flex-direction: column;
+        gap: 0.7em;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar" aria-label="Main navigation">
+      <div class="logo">K. O'Sullivan</div>
+      <ul class="nav-links" role="menubar">
+        <li><a href="index.html" role="menuitem">Home</a></li>
+        <li><a href="stories.html" role="menuitem" aria-current="page">Stories of Bravery</a></li>
+        <li><a href="about.html" role="menuitem">About Us</a></li>
+        <li><a href="ai-help.html" role="menuitem">AI Help Desk</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="stories" aria-labelledby="stories-title">
+      <h2 id="stories-title">Stories of Bravery: Cyber Harassment Survivors</h2>
+
+      <label for="searchStories" class="visually-hidden">Search stories</label>
+      <input
+        type="search"
+        id="searchStories"
+        name="searchStories"
+        placeholder="Search stories..."
+        aria-label="Search stories"
+        autocomplete="off"
+      />
+
+      <form id="storyForm" aria-label="Submit your story">
+        <label for="storyInput">Share your story:</label>
+        <textarea
+          id="storyInput"
+          name="story"
+          rows="5"
+          placeholder="Write your experience here..."
+          required
+        ></textarea>
+        <button type="submit" class="submit-btn">Submit Story</button>
+      </form>
+
+      <div id="storyList" aria-live="polite" aria-relevant="additions" tabindex="0"></div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-row">
+      <div class="footer-logo-name">
+        <img src="logo.png" alt="K. O'Sullivan logo" class="footer-logo" />
+        <span class="footer-site-name">K. O'Sullivan</span>
+      </div>
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="contact.html" class="footer-link">Contact</a>
+      </nav>
+      <div class="footer-emails">
+        <a href="mailto:info@kosullivan.com" class="footer-email">info@kosullivan.com</a>
+        <a href="mailto:support@kosullivan.com" class="footer-email">support@kosullivan.com</a>
+        <a href="mailto:hello@kosullivan.com" class="footer-email">hello@kosullivan.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      "use strict";
+
+      const storyForm = document.getElementById("storyForm");
+      const storyInput = document.getElementById("storyInput");
+      const storyList = document.getElementById("storyList");
+      const searchStories = document.getElementById("searchStories");
+
+      let savedStories = JSON.parse(localStorage.getItem("victimStories")) || [];
+
+      displayStories(savedStories);
+
+      storyForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        const storyText = storyInput.value.trim();
+        if (!storyText) return;
+        savedStories.unshift(storyText);
+        localStorage.setItem("victimStories", JSON.stringify(savedStories));
+        displayStories(savedStories);
+        storyInput.value = "";
+        storyInput.focus();
+      });
+
+      searchStories.addEventListener("input", function() {
+        const filter = searchStories.value.toLowerCase().trim();
+        const filteredStories = savedStories.filter((story) =>
+          story.toLowerCase().includes(filter)
+        );
+        displayStories(filteredStories);
+      });
+
+      function displayStories(stories) {
+        storyList.innerHTML = "";
+        if (stories.length === 0) {
+          const noStoriesMessage = document.createElement("p");
+          noStoriesMessage.textContent = "No stories found.";
+          noStoriesMessage.style.color = "var(--secondary)";
+          storyList.appendChild(noStoriesMessage);
+          return;
+        }
+        stories.forEach((story) => {
+          const storyEntry = document.createElement("div");
+          storyEntry.className = "story-entry";
+          storyEntry.textContent = story;
+          storyList.appendChild(storyEntry);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

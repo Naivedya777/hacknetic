@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Help Desk</title>
+    <style>
+        :root {
+            --color-primary: #b5838d;
+            --color-primary-dark: #85586f;
+            --color-background: #ffe5e5;
+            --color-border: #dab2bf;
+            --font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: var(--font-family);
+            background-color: var(--color-background);
+            color: var(--color-primary-dark);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        main {
+            width: 100%;
+            max-width: 480px;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgb(0 0 0 / 0.1);
+        }
+        h1 {
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary-dark);
+            font-size: 1rem;
+        }
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75em 1em;
+            font-size: 1rem;
+            font-family: inherit;
+            border: 1.8px solid var(--color-border);
+            border-radius: 8px;
+            transition: border-color 0.3s;
+            margin-bottom: 1.5rem;
+            resize: vertical;
+        }
+        select:focus,
+        textarea:focus {
+            border-color: var(--color-primary);
+            outline: none;
+            box-shadow: 0 0 4px var(--color-primary);
+        }
+        textarea[readonly] {
+            background-color: #fafafa;
+            color: #333;
+        }
+        button {
+            background-color: var(--color-primary);
+            color: white;
+            font-weight: 700;
+            border: none;
+            padding: 0.75em 1.2em;
+            border-radius: 24px;
+            font-size: 1.15rem;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s ease;
+        }
+        button:hover,
+        button:focus {
+            background-color: var(--color-primary-dark);
+            outline: none;
+        }
+        .error-message {
+            color: #d9534f;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>AI Help Desk</h1>
+
+        <form id="helpDeskForm" novalidate aria-live="polite">
+            <label for="questionSelect">Select your question or topic:</label>
+            <select id="questionSelect" required aria-describedby="errorMessage">
+                <option value="" disabled selected>-- Choose a question --</option>
+                <option value="online harassment">Online Harassment</option>
+                <option value="rape threats">Rape Threats</option>
+                <option value="online cybercrime">Online Cybercrime</option>
+                <option value="mental health resources">Mental Health Resources</option>
+                <option value="contact support">Contact Support</option>
+                <option value="report suspicious activity">Report Suspicious Activity</option>
+            </select>
+
+            <div id="errorMessage" class="error-message" role="alert"></div>
+
+            <label for="answerBox">AI Answer:</label>
+            <textarea id="answerBox" readonly placeholder="The AI's response will appear here..." aria-live="polite" rows="6"></textarea>
+
+            <button type="submit" aria-label="Get answer for selected question">Get Answer</button>
+        </form>
+    </main>
+
+    <script>
+        (() => {
+            const form = document.getElementById('helpDeskForm');
+            const select = document.getElementById('questionSelect');
+            const answerBox = document.getElementById('answerBox');
+            const errorMessage = document.getElementById('errorMessage');
+
+            const aiAnswers = {
+                "online harassment": "Online harassment is unwanted or aggressive behavior via the internet. It is important to report such incidents to the platform administrators and consider blocking the offenders to protect yourself.",
+                "rape threats": "If you receive rape threats, immediately contact law enforcement authorities and seek support from trusted organizations specializing in victim support.",
+                "online cybercrime": "Cybercrime includes fraud, hacking, and identity theft. Protect yourself by using strong passwords, enabling two-factor authentication, and promptly reporting suspicious activity to appropriate authorities.",
+                "mental health resources": "Access mental health support through trusted hotlines, online counseling services, or local professional counseling centers. Remember, seeking help is a sign of strength.",
+                "contact support": "For personalized assistance, you can contact our support team directly at support@kosullivan.com.",
+                "report suspicious activity": "Report any suspicious activity to your local law enforcement authorities or through our Contact Support channel to ensure safety and timely intervention.",
+            };
+
+            // Clear error and answer on input change
+            select.addEventListener('change', () => {
+                errorMessage.textContent = '';
+                errorMessage.style.display = 'none';
+                answerBox.value = '';
+            });
+
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                const question = select.value;
+                if (!question) {
+                    errorMessage.textContent = 'Please select a valid question.';
+                    errorMessage.style.display = 'block';
+                    answerBox.value = '';
+                    select.focus();
+                    return;
+                }
+
+                errorMessage.textContent = '';
+                errorMessage.style.display = 'none';
+
+                answerBox.value = aiAnswers[question] || "Sorry, no answer is available for that selection.";
+            });
+        })();
+    </script>
+</body>
+</html>
+

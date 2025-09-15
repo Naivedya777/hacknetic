@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Safety Score - Rated Safety Apps</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        :root {
+            --primary: #b5838d;
+            --secondary: #6d597a;
+            --bg-main: #ffe5ec;
+            --card-bg: #fff1f2;
+            --accent: #ffd6a5;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: var(--secondary);
+            background-color: var(--bg-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--secondary);
+            text-align: center;
+            padding: 1.2rem 0;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(181, 130, 141, 0.3);
+        }
+
+        main {
+            max-width: 820px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            font-weight: 800;
+            font-size: 2.3rem;
+            margin-bottom: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .search-bar input[type="search"] {
+            width: 100%;
+            max-width: 520px;
+            padding: 0.8rem 1.2rem;
+            font-size: 1.1rem;
+            border: 2.5px solid var(--primary);
+            border-radius: 24px 0 0 24px;
+            outline: none;
+            color: var(--secondary);
+            background-color: var(--card-bg);
+            font-weight: 600;
+        }
+
+        .search-bar input[type="search"]::placeholder {
+            color: var(--secondary);
+            opacity: 0.6;
+        }
+
+        .search-bar button {
+            background-color: var(--accent);
+            border: none;
+            padding: 0 1.3rem;
+            cursor: pointer;
+            border-radius: 0 24px 24px 0;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(181, 130, 141, 0.3);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .search-bar button:hover,
+        .search-bar button:focus {
+            background-color: var(--primary);
+            color: #fff;
+            outline: none;
+        }
+
+        ul.app-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li.app-item {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 3px 14px rgba(181, 130, 141, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 2rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        li.app-item:hover,
+        li.app-item:focus-within {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 9px 28px rgba(181, 130, 141, 0.35);
+            outline: none;
+        }
+
+        .app-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .app-details h2 {
+            font-size: 1.3rem;
+            margin: 0 0 0.3rem;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+        }
+
+        .app-rating {
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .app-description {
+            color: var(--secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        #no-results {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            padding: 2rem;
+            border: 2px dashed var(--primary);
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>Safety Score - Rated Safety Apps</header>
+    <main>
+        <h1>Search Safety-Rated Apps</h1>
+        <form class="search-bar" role="search" aria-label="Search Safety Rated Apps" onsubmit="return false;">
+            <input type="search" id="appSearch" name="appSearch" placeholder="Search apps by name or category..."
+                aria-label="Search apps by name or category" />
+            <button type="button" aria-label="Search apps" onclick="filterApps()">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+        <ul class="app-list" id="appList" aria-live="polite">
+            </ul>
+    </main>
+    <script>
+        const appData = [
+            {
+                name: "bSafe",
+                rating: "4.7/5",
+                description: "A comprehensive security app offering features like location sharing, panic button, and fake calls to keep you safe.",
+                icon: "🔒"
+            },
+            {
+                name: "My Safetipin",
+                rating: "4.5/5",
+                description: "Helps you make safer decisions on mobility by giving safety scores to areas based on multiple parameters.",
+                icon: "📍"
+            },
+            {
+                name: "SafetyCulture",
+                rating: "4.6/5",
+                description: "AI-powered safety inspection app to improve safety practices at workplaces with customizable checklists and audits.",
+                icon: "🤖"
+            },
+            {
+                name: "Phree",
+                rating: "4.3/5",
+                description: "Safety ratings app providing pre-emptive warnings and SOS alert features for personal safety.",
+                icon: "📱"
+            }
+        ];
+
+        const appList = document.getElementById("appList");
+        const searchInput = document.getElementById("appSearch");
+
+        // Function to create an individual app list item
+        function createAppItem(app) {
+            const li = document.createElement("li");
+            li.className = "app-item";
+            li.innerHTML = `
+                <span class="app-icon" aria-hidden="true">${app.icon}</span>
+                <div class="app-details">
+                    <h2>${app.name}</h2>
+                    <div class="app-rating">Rating: ⭐ ${app.rating}</div>
+                    <p class="app-description">${app.description}</p>
+                </div>
+            `;
+            return li;
+        }
+
+        // Function to render all apps or filtered apps
+        function renderApps(appsToRender) {
+            appList.innerHTML = ""; // Clear existing list
+            if (appsToRender.length === 0) {
+                appList.innerHTML = '<div id="no-results">No apps found. Try a different search! 🔎</div>';
+                return;
+            }
+            appsToRender.forEach(app => {
+                appList.appendChild(createAppItem(app));
+            });
+        }
+
+        // Filter function with dynamic rendering
+        function filterApps() {
+            const filter = searchInput.value.toLowerCase();
+            const filteredApps = appData.filter(app => {
+                return app.name.toLowerCase().includes(filter) || app.description.toLowerCase().includes(filter);
+            });
+            renderApps(filteredApps);
+        }
+
+        // Initial render of all apps
+        document.addEventListener("DOMContentLoaded", () => {
+            renderApps(appData);
+        });
+
+        // Event listeners for search input
+        searchInput.addEventListener("keyup", filterApps);
+        document.querySelector(".search-bar button").addEventListener("click", filterApps);
+    </script>
+</body>
+</html>

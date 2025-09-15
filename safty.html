@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Safety & Self-help - 21 Day Tasks</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #ffe5ec;
+      color: #6d597a;
+      padding: 2em;
+      max-width: 900px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #b5838d;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+      
+    .intro-paragraph {
+      background: #fae1dd;
+      border-radius: 16px;
+      padding: 1.4em 2em;
+      margin-bottom: 2em;
+      color: #85586f;
+      font-size: 1.15em;
+      line-height: 1.6;
+      box-shadow: 0 2px 10px rgba(182, 131, 141, 0.10);
+      text-align: center;
+      font-weight: 600;
+    }
+    .calendars {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+    }
+    .calendar {
+      background: #ffd6a5;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(182,131,141,0.08);
+      padding: 1.8em 1em 2em;
+      flex: 1 1 100%;
+      max-width: 500px;
+    }
+    .calendar h3 {
+      text-align: center;
+      margin-bottom: 1.2em;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+    }
+    .day-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+    .day-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.55em 0.8em;
+      border-bottom: 1px solid #dab2bf;
+      font-weight: 600;
+      font-size: 1em;
+    }
+    .day-item:last-child {
+      border-bottom: none;
+    }
+    .day-label {
+      color: #85586f;
+    }
+    .yt-link {
+      color: #0a66c2;
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .yt-link:hover, .yt-link:focus {
+      color: #1558a4;
+      outline: none;
+      text-decoration: underline;
+    }
+    @media(max-width: 640px) {
+      .calendars {
+        flex-direction: column;
+        gap: 1.4em;
+      }
+      .calendar {
+        flex: 1 1 100%;
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Safety &amp; Self-help 21-Day To-Do List</h1>
+  <p class="intro-paragraph">
+    On this page, we provide carefully curated videos focused on cybersecurity and mental health
+    betterment. Our resources are designed to support victims by offering practical guidance on
+    protecting oneself online and strengthening mental well-being after cyber incidents. Each day
+    of our 21-day program features targeted videos aimed at empowering you to stay safe and heal.
+  </p>
+  <div class="calendars">
+    <section class="calendar" aria-labelledby="calendar1-title">
+      <h3 id="calendar1-title">21-Day Video Program</h3>
+      <ul class="day-list" role="list">
+        <!-- JavaScript will insert days here -->
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    // Example YouTube links array - replace with your actual links
+    const ytLinks = [
+      "https://www.youtube.com/watch?v=k7y69lkuEAc",
+      "https://www.youtube.com/watch?v=OZaLTqKt4kw",
+      "https://www.youtube.com/watch?v=ydTtfMG8MMk",
+      "https://www.youtube.com/watch?v=kg6PHg5nCXM",
+      "https://www.youtube.com/watch?v=3wahS0l1cb8",
+      "https://www.youtube.com/watch?v=3wahS0l1cb8",
+      "https://www.youtube.com/watch?v=mY2VpqyYrL0",
+      "https://www.youtube.com/watch?v=xNgMH3noo3M",
+      "https://www.youtube.com/watch?v=TYVtFYiCiKw",
+      "https://www.youtube.com/watch?v=rvQ-_QNuTKY",
+      "https://www.youtube.com/watch?v=aBdP8N49NlA",
+      "https://www.youtube.com/watch?v=Kpc31WJ6l2M",
+      "https://www.youtube.com/watch?v=Y-M9G4jikng",
+      "https://www.youtube.com/watch?v=M8CR4MuH_wQ",
+      "https://www.youtube.com/watch?v=kg6PHg5nCXM",
+      "https://www.youtube.com/watch?v=yB38-ozfDP0",
+      "https://www.youtube.com/watch?v=OKed6UShRQE",
+      "https://www.youtube.com/watch?v=OKed6UShRQE",
+      "https://www.youtube.com/watch?v=aS1VW6h_NW0",
+      // ... up to 21 links
+    ];
+
+    // Fill empty with placeholder links if fewer than 21
+    while (ytLinks.length < 21) ytLinks.push("https://youtu.be/dQw4w9WgXcQ");
+
+    const calendarContainer = document.querySelector('.calendar .day-list');
+
+    function populateCalendar(container, links) {
+      for(let i = 0; i < 21; i++){
+        const li = document.createElement('li');
+        li.className = 'day-item';
+
+        const dayLabel = document.createElement('span');
+        dayLabel.className = 'day-label';
+        dayLabel.textContent = `Day ${i+1}`;
+
+        const link = document.createElement('a');
+        link.className = 'yt-link';
+        link.href = links[i];
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Watch Task';
+
+        li.appendChild(dayLabel);
+        li.appendChild(link);
+        container.appendChild(li);
+      }
+    }
+
+    populateCalendar(calendarContainer, ytLinks);
+  </script>
+</body>
+</html>
